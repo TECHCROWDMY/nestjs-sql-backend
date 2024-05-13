@@ -15,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
       port: 3306,
       username: 'root',
       password: 'Symspace1234@',
+      // password: '1234',
       database: 'sympspace',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
