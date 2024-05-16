@@ -7,6 +7,8 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
+import { GoogleStrategy } from './google.strategy';
+import { JwtGuard } from './jwt-auth.guard';
 
 @Module({
   imports: [
@@ -16,8 +18,7 @@ import { JwtStrategy } from './jwt.strategy';
       inject: [ConfigService],
       useFactory: () => {
         return {
-          // secret: process.env.JWT_SECRET,
-          secret: 'djxfhckjdsxicdsixbid',
+          secret: process.env.JWT_SECRET,
           signOptions: {
             expiresIn: 1500,
           },
@@ -27,7 +28,7 @@ import { JwtStrategy } from './jwt.strategy';
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, JwtGuard, GoogleStrategy],
   exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

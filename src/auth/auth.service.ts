@@ -55,4 +55,29 @@ export class AuthService {
 
     return { token };
   }
+
+  googleLogin(req: any) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+    return {
+      message: 'User Info from Google',
+      user: req.user,
+    };
+  }
+
+  async oAuthLogin(req: any) {
+    if (!req.user) {
+      throw new Error('User not found!!!');
+    }
+
+    const payload = {
+      email: req.user.email,
+      name: req.user.name,
+    };
+
+    const jwt = await this.jwtService.sign(payload);
+
+    return { jwt };
+  }
 }
