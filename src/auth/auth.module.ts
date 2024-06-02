@@ -9,6 +9,12 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { GoogleStrategy } from './google.strategy';
 import { JwtGuard } from './jwt-auth.guard';
+// import { FacebookStrategy } from './facebook.strategy';
+import { GitHubStrategy } from './github.strategy';
+import { AppleStrategy } from './apple.strategy';
+import { MailchimpModule } from '../mailchimp/mailchimp.module';
+// import { EmailModule } from '../email/email.module';
+import { UsersModule } from '../users/users.module'; // Import the UsersModule
 
 @Module({
   imports: [
@@ -25,10 +31,21 @@ import { JwtGuard } from './jwt-auth.guard';
         };
       },
     }),
+    UsersModule,
+    MailchimpModule,
+    // EmailModule,
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, JwtGuard, GoogleStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    JwtGuard,
+    GoogleStrategy,
+    // FacebookStrategy,
+    GitHubStrategy,
+    AppleStrategy,
+  ],
   exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

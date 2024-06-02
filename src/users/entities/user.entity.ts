@@ -16,6 +16,15 @@ class User {
 
   @Column()
   password: string;
+
+  @Column({ default: false })
+  isVerified: boolean;
+
+  @Column({ nullable: true })
+  resetToken: string;
+
+  @Column({ nullable: true })
+  resetTokenExpiry: Date;
 }
 
 export default User;

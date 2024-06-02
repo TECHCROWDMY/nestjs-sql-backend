@@ -7,6 +7,8 @@ import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import { AuthModule } from './auth/auth.module';
 import { GoogleStrategy } from './auth/google.strategy';
+import { MailchimpModule } from './mailchimp/mailchimp.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { GoogleStrategy } from './auth/google.strategy';
     CategoriesModule,
     OrdersModule,
     AuthModule,
+    MailchimpModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],
