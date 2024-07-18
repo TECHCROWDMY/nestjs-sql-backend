@@ -9,6 +9,10 @@ import { AuthModule } from './auth/auth.module';
 import { GoogleStrategy } from './auth/google.strategy';
 import { MailchimpModule } from './mailchimp/mailchimp.module';
 import { EmailModule } from './email/email.module';
+import { ProductsModule } from './products/products.module';
+import { CompaniesModule } from './companies/companies.module';
+import { SubcategoriesModule } from './subcategories/subcategories.module';
+import { SubcategoryItemsModule } from './subcategory-items/subcategory-items.module';
 
 @Module({
   imports: [
@@ -29,6 +33,10 @@ import { EmailModule } from './email/email.module';
     AuthModule,
     MailchimpModule,
     EmailModule,
+    ProductsModule,
+    CompaniesModule,
+    SubcategoriesModule,
+    SubcategoryItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],

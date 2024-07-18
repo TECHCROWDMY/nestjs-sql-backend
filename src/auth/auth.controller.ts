@@ -9,6 +9,7 @@ import {
   HttpStatus,
   Query,
   BadRequestException,
+  HttpCode,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -18,6 +19,7 @@ import { GoogleOauthGuard } from './google-oauth.guard';
 import { Response } from 'express';
 import { UsersService } from 'src/users/users.service';
 import { MailchimpService } from 'src/mailchimp/mailchimp.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth')
 export class AuthController {
@@ -25,17 +27,36 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private mailChimpService: MailchimpService,
+    private jwtService: JwtService,
   ) {}
 
-  @Post('/signup')
-  async signUp(
-    @Body() signUpDto: SignUpDto,
-  ): Promise<{ message: string; token: string }> {
-    return this.authService.signUp(signUpDto);
+  @Post('signup')
+  async signUp(@Body() signUpDto: SignUpDto, @Res() res: Response) {
+    const result = await this.authService.signUp(signUpDto);
+    if (result.token) {
+      return res.status(HttpStatus.CREATED).json(result);
+    } else {
+      return res.status(HttpStatus.CONFLICT).json(result);
+    }
   }
 
-  @Post('/login')
-  login(@Body() loginDto: LoginDto): Promise<{ token: string }> {
+  @Get('verify-email')
+  async verifyEmail(@Query('token') token: string, @Res() res) {
+    const { role } = this.jwtService.verify(token);
+    try {
+      await this.authService.verifyEmail(token);
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/verification-success?role=${role}`,
+      );
+    } catch (error) {
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/email-verification-failed`,
+      );
+    }
+  }
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
 
@@ -99,29 +120,6 @@ export class AuthController {
     return res.redirect(frontendRedirectUrl);
   }
 
-  // @Get('send-verification-email')
-  // async verifyEmail(@Query('token') token: string): Promise<string> {
-  //   const payload = await this.authService.verifyToken(token);
-  //   const email = payload.email;
-
-  //   try {
-  //     await this.usersService.verifyUser(email);
-  //     return 'Email verified successfully';
-  //   } catch (err) {
-  //     throw new BadRequestException('Invalid token');
-  //   }
-  // }
-
-  @Get('verify-email')
-  async verifyEmail(@Query('token') token: string, @Res() res) {
-    const result = await this.authService.verifyEmail(token);
-    if (result) {
-      return res.redirect('/email-verified'); // Redirect to a confirmation page
-    } else {
-      return res.redirect('/email-verification-failed'); // Redirect to an error page
-    }
-  }
-
   @Post('forgot-password')
   async forgotPassword(@Body('email') email: string) {
     try {
@@ -150,7 +148,10 @@ export class AuthController {
   }
 
   @Post('/send-email')
-  async sendEmail() {
-    return this.mailChimpService.sendEmail('thilak014@gmail.com', 'test');
+  async sendEmail(
+    @Body('email') email: string,
+    @Body('verificationUrl') verificationUrl: string,
+  ) {
+    return this.mailChimpService.sendEmail(email, verificationUrl);
   }
 }

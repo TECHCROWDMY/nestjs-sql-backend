@@ -7,9 +7,6 @@ import { ConfigService } from '@nestjs/config';
 export class MailchimpService {
   private readonly logger = new Logger(MailchimpService.name);
   private readonly transactionalClient;
-  // const mailchimpClient = require("@mailchimp/mailchimp_transactional")(
-  //   "YOUR_API_KEY"
-  // );
 
   constructor(private readonly configService: ConfigService) {
     Mailchimp.setConfig({
@@ -64,7 +61,7 @@ export class MailchimpService {
           from_email: 'contact@symspacelabs.com',
           subject: 'Verify your email address',
           to: [{ email, type: 'to' }],
-          html: `<p>Please verify your email by clicking the following link: <a href="${verificationUrl}">Verify Email</a></p>`,
+          html: `<p>Please verify your email by clicking the following link:</p></br>${verificationUrl}`,
         },
       });
       return response;

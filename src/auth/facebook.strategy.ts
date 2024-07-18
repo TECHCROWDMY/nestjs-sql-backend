@@ -11,7 +11,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     super({
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      callbackURL: `${process.env.BASE_URL}/auth/callback/facebook`,
+      callbackURL: `${process.env.BACKEND_URL}/auth/callback/facebook`,
       scope: 'email',
       profileFields: ['emails', 'name'],
     });
