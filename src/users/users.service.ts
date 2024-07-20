@@ -16,7 +16,7 @@ export class UsersService {
     return users;
   }
 
-  async getUserById(id: number) {
+  async getUserById(id: string) {
     const user = await this.usersRepository.findOne({
       where: {
         id: id,
@@ -38,7 +38,7 @@ export class UsersService {
     return newUser;
   }
 
-  async deleteById(id: number) {
+  async deleteById(id: string) {
     const user = await this.usersRepository.findOne({
       where: {
         id: id,
@@ -71,7 +71,7 @@ export class UsersService {
   }
 
   async saveResetToken(
-    userId: number,
+    userId: string,
     token: string,
     expiry: Date,
   ): Promise<void> {

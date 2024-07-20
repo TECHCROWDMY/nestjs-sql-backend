@@ -17,8 +17,8 @@ export class SubcategoryItem {
   @Column()
   name: string;
 
-  @Column()
-  parent: string;
+  @Column({ nullable: true })
+  parent?: string;
 
   @Column()
   subcategoryId: string;

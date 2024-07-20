@@ -13,11 +13,9 @@ import { JwtService } from '@nestjs/jwt';
 import { SignUpDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { MailchimpService } from '../mailchimp/mailchimp.service';
-// import { UsersService } from '../users/users.service';
 import * as jwt from 'jsonwebtoken';
-// import { UsersService } from 'src/users/users.service';
-// import { MailchimpService } from '../email/email.service';
 import * as crypto from 'crypto';
+import { Company } from 'src/companies/entities/company.entity';
 
 @Injectable()
 export class AuthService {
@@ -26,15 +24,26 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+
+    @InjectRepository(Company)
+    private readonly companiesRepository: Repository<Company>,
+
     private jwtService: JwtService,
     private readonly mailchimpService: MailchimpService,
-    // private readonly usersService: UsersService,
   ) {}
 
   async signUp(
     signUpDto: SignUpDto,
   ): Promise<{ message: string; token?: string }> {
-    const { firstName, lastName, email, password, role = 'buyer' } = signUpDto;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      role = 'buyer',
+      businessName,
+      website,
+    } = signUpDto;
 
     const existingUser = await this.usersRepository.findOne({
       where: { email },
@@ -56,12 +65,20 @@ export class AuthService {
 
     await this.usersRepository.save(user);
 
+    if (role === 'seller') {
+      const company = this.companiesRepository.create({
+        userId: user.id, // Assuming you have a userId field in your companies table
+        businessName,
+        website,
+      });
+      await this.companiesRepository.save(company);
+    }
+
     const token = this.jwtService.sign(
       { userId: user.id, email: user.email, role: user.role },
       { secret: process.env.JWT_SECRET, expiresIn: '1h' },
     );
 
-    // Construct verification URL
     const verificationUrl = `${process.env.BACKEND_URL}/auth/verify-email?token=${token}`;
 
     await this.mailchimpService.sendVerificationEmail(email, verificationUrl);

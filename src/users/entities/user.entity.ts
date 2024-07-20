@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { Company } from '../../companies/entities/company.entity';
 
 @Entity()
-class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   firstName: string;
@@ -28,6 +29,9 @@ class User {
 
   @Column({ nullable: true })
   resetTokenExpiry: Date;
+
+  @OneToOne(() => Company, (company) => company.user)
+  company: Company;
 }
 
 export default User;
