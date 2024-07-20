@@ -21,8 +21,7 @@ import { SubcategoryItemsModule } from './subcategory-items/subcategory-items.mo
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'Symspace1234@', //VPS
-      // password: '1234', //Local
+      password: process.env.DB_PASSWORD,
       database: 'sympspace',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
