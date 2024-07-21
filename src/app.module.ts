@@ -18,11 +18,11 @@ import { SubcategoryItemsModule } from './subcategory-items/subcategory-items.mo
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_HOST,
+      host: 'localhost',
       port: 3306,
-      username: process.env.DB_USERNAME,
+      username: 'root',
       password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      database: 'sympspace',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
