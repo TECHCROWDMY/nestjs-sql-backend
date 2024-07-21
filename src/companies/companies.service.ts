@@ -43,7 +43,7 @@ export class CompaniesService {
     return updatedCompany;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const deleteResult = await this.companiesRepository.delete(id);
     if (!deleteResult.affected) {
       throw new NotFoundException(`Company with ID ${id} not found`);
