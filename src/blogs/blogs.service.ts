@@ -6,7 +6,7 @@ import { UpdateBlogDto } from './dto/update-blog.dto';
 import { Blog } from './entities/blog.entity';
 
 @Injectable()
-export class BlogService {
+export class BlogsService {
   constructor(
     @InjectRepository(Blog)
     private blogRepository: Repository<Blog>,
