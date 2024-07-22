@@ -13,6 +13,7 @@ import { ProductsModule } from './products/products.module';
 import { CompaniesModule } from './companies/companies.module';
 import { SubcategoriesModule } from './subcategories/subcategories.module';
 import { SubcategoryItemsModule } from './subcategory-items/subcategory-items.module';
+import { BlogsModule } from './blogs/blogs.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { SubcategoryItemsModule } from './subcategory-items/subcategory-items.mo
     CompaniesModule,
     SubcategoriesModule,
     SubcategoryItemsModule,
+    BlogsModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],
