@@ -14,6 +14,7 @@ import { CompaniesModule } from './companies/companies.module';
 import { SubcategoriesModule } from './subcategories/subcategories.module';
 import { SubcategoryItemsModule } from './subcategory-items/subcategory-items.module';
 import { BlogsModule } from './blogs/blogs.module';
+import { SeederModule } from './database/seeders/seeder.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { BlogsModule } from './blogs/blogs.module';
     SubcategoriesModule,
     SubcategoryItemsModule,
     BlogsModule,
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],

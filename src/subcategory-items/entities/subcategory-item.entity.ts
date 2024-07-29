@@ -1,12 +1,6 @@
 // subcategory-item.entity.ts
 
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Subcategory } from '../../subcategories/entities/subcategory.entity';
 
 @Entity()
@@ -23,7 +17,6 @@ export class SubcategoryItem {
   @Column()
   subcategoryId: string;
 
-  @ManyToOne(() => Subcategory)
-  @JoinColumn({ name: 'subcategoryId' })
+  @ManyToOne(() => Subcategory, (subcategory) => subcategory.subcategoryItems)
   subcategory: Subcategory;
 }

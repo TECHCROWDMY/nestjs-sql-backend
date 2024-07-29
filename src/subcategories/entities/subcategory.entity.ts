@@ -3,9 +3,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Category } from '../../categories/entities/category.entity';
+import { SubcategoryItem } from 'src/subcategory-items/entities/subcategory-item.entity';
 
 @Entity()
 export class Subcategory {
@@ -18,7 +19,12 @@ export class Subcategory {
   @Column()
   categoryId: string;
 
-  @ManyToOne(() => Category)
-  @JoinColumn({ name: 'categoryId' })
+  @ManyToOne(() => Category, (category) => category.subcategories)
   category: Category;
+
+  @OneToMany(
+    () => SubcategoryItem,
+    (subcategoryItem) => subcategoryItem.subcategory,
+  )
+  subcategoryItems: SubcategoryItem[];
 }
