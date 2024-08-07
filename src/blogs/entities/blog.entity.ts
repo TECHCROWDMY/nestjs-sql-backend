@@ -19,7 +19,7 @@ export class Blog {
   @IsString()
   title: string;
 
-  @Column()
+  @Column('text')
   @IsNotEmpty()
   @IsString()
   content: string;
@@ -31,18 +31,8 @@ export class Blog {
 
   @Column()
   @IsNotEmpty()
-  @IsUrl()
-  url: string;
-
-  @Column()
-  @IsNotEmpty()
   @IsNumber()
   newsType: number;
-
-  @Column()
-  @IsNotEmpty()
-  @IsString()
-  tags: string;
 
   @Column()
   @IsNotEmpty()
@@ -53,6 +43,26 @@ export class Blog {
   @IsNotEmpty()
   @IsString()
   slug: string;
+
+  @Column()
+  @IsNotEmpty()
+  @IsUrl()
+  handle_url: string;
+
+  @Column()
+  @IsNotEmpty()
+  @IsUrl()
+  handle_url_title: string;
+
+  @Column()
+  @IsNotEmpty()
+  @IsUrl()
+  article_source_url: string;
+
+  @Column()
+  @IsNotEmpty()
+  @IsString()
+  tag: string;
 
   @CreateDateColumn()
   createdAt: Date;

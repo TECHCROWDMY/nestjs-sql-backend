@@ -5,6 +5,8 @@ import { Category } from 'src/categories/entities/category.entity';
 import { Subcategory } from 'src/subcategories/entities/subcategory.entity';
 import { SubcategoryItem } from 'src/subcategory-items/entities/subcategory-item.entity';
 import { categoriesSeedData } from './category/data';
+import { blogSeedData } from './blog/data';
+import { Blog } from 'src/blogs/entities/blog.entity';
 
 @Injectable()
 export class SeederService {
@@ -15,11 +17,14 @@ export class SeederService {
     private readonly subcategoryRepository: Repository<Subcategory>,
     @InjectRepository(SubcategoryItem)
     private readonly subcategoryItemRepository: Repository<SubcategoryItem>,
+    @InjectRepository(Blog)
+    private readonly blogRepository: Repository<Blog>,
   ) {}
 
   async seed() {
     await this.clear();
 
+    //SEED CATEGORIES
     for (const categoryData of categoriesSeedData) {
       const category = this.categoryRepository.create({
         name: categoryData.name,
@@ -36,11 +41,21 @@ export class SeederService {
         for (const subcategoryItemData of subcategoryData.subcategoryItems) {
           const subcategoryItem = this.subcategoryItemRepository.create({
             name: subcategoryItemData.name,
-            parent: subcategoryItemData.parent,
             subcategory,
           });
           await this.subcategoryItemRepository.save(subcategoryItem);
         }
+      }
+    }
+
+    //SEED BLOGS
+    for (const blog of blogSeedData) {
+      const existingBlog = await this.blogRepository.findOne({
+        where: { slug: blog.slug },
+      });
+      if (!existingBlog) {
+        const newBlog = this.blogRepository.create(blog);
+        await this.blogRepository.save(newBlog);
       }
     }
   }
@@ -49,5 +64,6 @@ export class SeederService {
     await this.subcategoryItemRepository.delete({});
     await this.subcategoryRepository.delete({});
     await this.categoryRepository.delete({});
+    await this.blogRepository.delete({});
   }
 }

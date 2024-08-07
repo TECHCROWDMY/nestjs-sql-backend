@@ -45,15 +45,21 @@ export class AuthController {
     const { role } = this.jwtService.verify(token);
     try {
       await this.authService.verifyEmail(token);
-      return res.redirect(
-        `${process.env.FRONTEND_URL}/verification-success?role=${role}`,
-      );
+      let redirectUrl;
+      if (role === 'seller') {
+        redirectUrl = `${process.env.FRONTEND_URL}/vendor/dashboard`;
+      } else {
+        redirectUrl = `${process.env.FRONTEND_URL}/marketplace`;
+      }
+
+      return res.redirect(redirectUrl);
     } catch (error) {
       return res.redirect(
         `${process.env.FRONTEND_URL}/email-verification-failed`,
       );
     }
   }
+
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginDto: LoginDto) {
