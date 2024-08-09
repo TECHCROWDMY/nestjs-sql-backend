@@ -9,7 +9,7 @@ export class OrdersService {
   }
 
   findAll() {
-    return `This action returns all  orders2 edit by new Thilak version`;
+    return `This action returns all  orders2 edit by new Thilak ver2 version`;
   }
 
   findOne(id: number) {
