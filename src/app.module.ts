@@ -15,6 +15,8 @@ import { SubcategoriesModule } from './subcategories/subcategories.module';
 import { SubcategoryItemsModule } from './subcategory-items/subcategory-items.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { SeederModule } from './database/seeders/seeder.module';
+import { StockModule } from './stock/stock.module';
+import { ProductImagesModule } from './product-images/product-images.module';
 
 @Module({
   imports: [
@@ -40,6 +42,8 @@ import { SeederModule } from './database/seeders/seeder.module';
     SubcategoryItemsModule,
     BlogsModule,
     SeederModule,
+    StockModule,
+    ProductImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],
